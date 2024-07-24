@@ -1,0 +1,8 @@
+.idea
+dist
+.env
+.env.sample
+node_modules
+.husky
+.storybook
+package-lock.json

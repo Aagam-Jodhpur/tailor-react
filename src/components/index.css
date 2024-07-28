@@ -12,7 +12,7 @@
   width: 100%;
   height: 100%;
   display: flex;
-  justify-items: center;
+  justify-content: center;
   align-items: center;
   background-color: rgba(100, 100, 100, 30%);
   backdrop-filter: blur(10px);
@@ -20,17 +20,24 @@
 }
 
 .tailor-loader {
-  font-size: 2em;
-  color: #103;
+  --fg: #6100ee;
+  --bg: #d7b8fc;
+  height: 4px;
+  width: 130px;
+  border-radius: 8px;
+  background:
+    no-repeat linear-gradient(to right, var(--fg), var(--fg)),
+    var(--bg);
+  background-size: 60% 100%;
+  animation: loaderAnime 1s infinite ease-in-out;
 }
 
 .tailor-error {
-  justify-self: end;
+  align-self: end;
   width: 90%;
-  border: solid green 5px;
   display: flex;
   flex-flow: column nowrap;
-  gap: 12px;
+  gap: 0;
 }
 
 .tailor-error-item {
@@ -38,4 +45,24 @@
   color: white;
   font-size: 1em;
   padding: 12px;
+  margin: 0 0 1.25em;
+  border-radius: 8px;
+}
+
+@keyframes loaderAnime {
+  0% {
+    background-position:
+      -150% 0,
+      -150% 0;
+  }
+  66% {
+    background-position:
+      250% 0,
+      -150% 0;
+  }
+  100% {
+    background-position:
+      250% 0,
+      250% 0;
+  }
 }

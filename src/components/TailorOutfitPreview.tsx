@@ -1,7 +1,7 @@
 import './index.css'
 
-import { useEffect, useRef, useState, Component } from 'react'
-import { createOutfitPreview } from '@aagam/tailor'
+import { useEffect, useRef, useState, MutableRefObject } from 'react'
+import { createOutfitPreview, TError } from '@aagam/tailor'
 import { hashCode } from '../common/utils.ts'
 
 import type { FC } from 'react'
@@ -23,8 +23,8 @@ export interface TailorOutfitPreviewProps {
   height: string
   options?: TPreviewOptions
   textures?: TTextureMap
-  loader?: Component
-  error?: Component
+  loader?: FC
+  error?: FC<TailorErrorProps>
 }
 
 type TArchivedTextureMap = Record<string, number>
@@ -68,7 +68,7 @@ export const TailorOutfitPreview: FC<TailorOutfitPreviewProps> = ({
   height = '100%',
   ...props
 }) => {
-  const containerRef = useRef(null)
+  const containerRef = useRef() as MutableRefObject<HTMLDivElement>
   const appliedTextures = useRef<TArchivedTextureMap>({})
 
   const [tailor, setTailor] = useState<Tailor | null>(null)
@@ -87,14 +87,18 @@ export const TailorOutfitPreview: FC<TailorOutfitPreviewProps> = ({
         // If tailor instance already exists, destroy it
         if (tailor) {
           // TODO: destroy tailor instance here
+          tailor.destroy()
         }
 
         // Create tailor instance
-        const rootEl = containerRef.current as HTMLElement
+        const rootEl = containerRef.current
         const _tailor = await createOutfitPreview(props.outfitCfg, rootEl)
         setTailor(_tailor)
-      } catch (e) {
-        setErrs(errs => [...errs, e.message])
+      } catch (err) {
+        if (err instanceof TError) {
+          const errMsg = err.print()
+          setErrs(errs => [...errs, errMsg])
+        } else throw err
       }
       setLoading(false)
     }
@@ -209,7 +213,7 @@ export const TailorOutfitPreview: FC<TailorOutfitPreviewProps> = ({
 //==============================<  Loader component  >==========================
 
 const TailorLoader: FC = _ => {
-  return <span className="tailor-loader">Loading</span>
+  return <div className="tailor-loader" />
 }
 
 //==============================<  Error component  >===========================

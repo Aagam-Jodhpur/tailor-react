@@ -1,4 +1,3 @@
-import { TTimingFnName, TTransitionName } from '@aagam/tailor'
 import type { Meta, StoryObj } from '@storybook/react'
 import { Controls, Description, Subtitle, Title } from '@storybook/blocks'
 
@@ -26,8 +25,8 @@ import fullPyjamaMask from './assets/kurta-pyjama/pyjama/masks/full-mask.png'
 //==================================<  Textures  >==============================
 
 import texture1 from './assets/textures/1.jpg'
-import texture2 from './assets/textures/4.jpg'
-import texture3 from './assets/textures/5.jpg'
+// import texture2 from './assets/textures/4.jpg'
+// import texture3 from './assets/textures/5.jpg'
 import texture4 from './assets/textures/6.jpg'
 
 //------------------------------------------------------------------------------

@@ -1,30 +1,30 @@
-# React + TypeScript + Vite
+# Tailor React
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React component library wrapping the functionality of [`@aagam/tailor`](https://github.com/Aagam-Jodhpur/tailor) library.
 
-Currently, two official plugins are available:
+## Install
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+`npm i Aagam-Jodhpur/tailor-react`
 
-## Expanding the ESLint configuration
+## Usage
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+Check the source code for [Outfit Customization Demo]()
 
-- Configure the top-level `parserOptions` property like this:
+## Documentation
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+For details about the schema of different config objects,
+refer the documentation of [`@aagam/tailor`](https://github.com/Aagam-Jodhpur/tailor).
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+For details about the components in this library, visit the [Storybook](https://Aagam-Jodhpur.github.io/tailor-react)
+
+## Known issues
+
+### Dual canvas in react strict mode
+
+Disable react strict mode until this is fixed.
+
+### Types not available
+
+Due to issues in the build pipeline, type declarations can not be generated.
+
+This will be fixed soon.

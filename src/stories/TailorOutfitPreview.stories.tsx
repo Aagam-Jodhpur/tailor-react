@@ -50,13 +50,41 @@ const meta = {
       ),
     },
   },
-  tags: ['autodocs'],
+  // tags: ['autodocs'],
   argTypes: {
+    outfitCfg: {
+      table: {
+        category: 'Main',
+      },
+    },
+    textures: {
+      table: {
+        category: 'Main',
+      },
+    },
     options: {
       table: {
-        defaultValue: {
-          summary: 'Default set by Tailor',
-        },
+        category: 'Main',
+      },
+    },
+    width: {
+      table: {
+        category: 'Appearanace',
+      },
+    },
+    height: {
+      table: {
+        category: 'Appearanace',
+      },
+    },
+    noLoader: {
+      table: {
+        category: 'Appearanace',
+      },
+    },
+    noErrorDisplay: {
+      table: {
+        category: 'Appearanace',
       },
     },
     onInitStart: {
@@ -85,13 +113,27 @@ const meta = {
       },
     },
     loader: {
+      control: {
+        disable: true,
+      },
       table: {
         category: 'Render props',
+        defaultValue: {
+          summary: 'TailorLoader',
+          detail: 'Internal component',
+        },
       },
     },
     error: {
+      control: {
+        disable: true,
+      },
       table: {
         category: 'Render props',
+        defaultValue: {
+          summary: 'TailorError',
+          detail: 'Internal component',
+        },
       },
     },
   },

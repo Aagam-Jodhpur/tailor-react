@@ -1,7 +1,12 @@
 import './index.css'
 
 import { useEffect, useRef, useState, MutableRefObject } from 'react'
-import { createOutfitPreview, TError } from '@aagam/tailor'
+import {
+  createOutfitPreview,
+  TError,
+  TTimingFnName,
+  TTransitionName,
+} from '@aagam/tailor'
 import { hashCode } from '../common/utils.ts'
 
 import type { FC } from 'react'
@@ -16,16 +21,65 @@ import type {
 //-----------------------------------<  Types  >--------------------------------
 //------------------------------------------------------------------------------
 
+/**
+ * Boom boom baby
+ */
 export type TTextureMap = Record<string, TTextureConfig | null>
+
 export interface TailorOutfitPreviewProps {
+  /**
+   * The outfit config as defined by Tailor
+   * Everytime this prop changes, the underlying Tailor instance will
+   * be rebuilt triggering a fresh initialization process
+   */
   outfitCfg: TOutfitConfig
-  width: string
-  height: string
+
+  /**
+   * Preview options as defined by Tailor
+   */
   options?: TPreviewOptions
+
+  /**
+   * An object where keys are group names and values are texture config objects.
+   * Null values indicate no texture.
+   * Changing this prop will trigger the texturing procedure on the
+   * underlying Tailor instance
+   */
   textures?: TTextureMap
+
+  /**
+   * Any CSS width specifier string is acceptable
+   */
+  width: string
+
+  /**
+   * Any CSS height specifier string is acceptable
+   */
+  height: string
+
+  /**
+   * When true, will disable the loader overlay
+   */
   noLoader?: boolean
+
+  /**
+   * A functional component which will be displayed during init / loading.
+   * This component will, by default, be centered on the overlay.
+   * Can be positioned relative to the overlay as well.
+   */
   loader?: FC
+
+  /**
+   * When true, will disable the error overlay
+   */
   noErrorDisplay?: boolean
+
+  /**
+   * A functional component which will be displayed when any errors occur.
+   * An array of errors is passed to the component as a prop.
+   * This component will, by default, be centered on the overlay.
+   * Can be positioned relative to the overlay as well.
+   */
   error?: FC<TailorErrorProps>
 
   /**
@@ -92,16 +146,31 @@ enum TJobType {
 //------------------------------------------------------------------------------
 
 export const TailorOutfitPreview: FC<TailorOutfitPreviewProps> = ({
+  outfitCfg,
+  textures = {},
+  options = {
+    transitionOptions: {
+      entry: TTransitionName.FADE_IN,
+      exit: TTransitionName.FADE_OUT,
+      timingFn: TTimingFnName.EASE_IN_CUBIC,
+      speed: 0.05,
+    },
+  },
+
   width = '100%',
   height = '100%',
+
   noLoader = false,
+  loader,
+
   noErrorDisplay = false,
+  error,
+
   onInitStart,
   onInitEnd,
   onRenderStart,
   onRenderEnd,
   onError,
-  ...props
 }) => {
   const containerRef = useRef() as MutableRefObject<HTMLDivElement>
   const appliedTextures = useRef<TArchivedTextureMap>({})
@@ -128,7 +197,7 @@ export const TailorOutfitPreview: FC<TailorOutfitPreviewProps> = ({
 
         // Create tailor instance
         const rootEl = containerRef.current
-        const _tailor = await createOutfitPreview(props.outfitCfg, rootEl)
+        const _tailor = await createOutfitPreview(outfitCfg, rootEl)
         setTailor(_tailor)
       } catch (err) {
         if (err instanceof TError) {
@@ -142,18 +211,18 @@ export const TailorOutfitPreview: FC<TailorOutfitPreviewProps> = ({
     }
 
     init()
-  }, [props.outfitCfg])
+  }, [outfitCfg])
 
   // When preview options are changed
   useEffect(() => {
-    if (tailor && props.options) tailor.setPreviewOptions(props.options)
-  }, [tailor, props.options])
+    if (tailor && options) tailor.setPreviewOptions(options)
+  }, [tailor, options])
 
   // When texture map changes
   useEffect(() => {
-    if (!(tailor && props.textures)) return
+    if (!(tailor && textures)) return
 
-    const newTextures = archiveTextureMap(props.textures)
+    const newTextures = archiveTextureMap(textures)
     const diff = diffArchivedTextureMaps(newTextures, appliedTextures.current)
     appliedTextures.current = newTextures
 
@@ -163,7 +232,7 @@ export const TailorOutfitPreview: FC<TailorOutfitPreviewProps> = ({
       if (diffType === DiffType.CREATED || diffType === DiffType.MODIFIED) {
         job[groupKey] = {
           type: TJobType.APPLY,
-          data: props.textures![groupKey]!,
+          data: textures![groupKey]!,
         }
       } else {
         job[groupKey] = {
@@ -223,8 +292,8 @@ export const TailorOutfitPreview: FC<TailorOutfitPreviewProps> = ({
 
   //===============================<  Render method  >============================
 
-  const Loader = props.loader ?? TailorLoader
-  const Error = props.error ?? TailorError
+  const Loader = loader ?? TailorLoader
+  const Error = error ?? TailorError
 
   return (
     <div

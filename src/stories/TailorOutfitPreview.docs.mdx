@@ -1,0 +1,96 @@
+import { Meta, Title, Subtitle, Controls } from '@storybook/blocks'
+
+import * as TailorOutfitPreviewStories from './TailorOutfitPreview.stories'
+
+<Meta of={TailorOutfitPreviewStories} />
+
+<Title />
+
+<Subtitle />
+
+A React component wrapping the functionality of [`@aagam/tailor`](https://github.com/Aagam-Jodhpur/tailor) library.
+
+It creates and controls an instance the `TailorOutfitPreview` class, calling methods on the class when necessary.
+
+Features -
+
+- Can handle the outfit config by destroying and re-creating the Tailor instance
+- Handles consecutive texture changes-
+  - The texture that is first selected will be immediately applied
+  - While a texture is getting rendered, if another texture is selected, it will be stored in-memory and applied later
+- In-built loader and error display components
+- Support for custom loader and error display components
+- Event dispatching with callbacks
+
+## Import
+
+```ts
+import { TailorOutfitPreview } from '@aagam/tailor-react'
+```
+
+## Props
+
+<Controls />
+
+## Schema of configuration objects
+
+Some props like `outfitCfg`, `textures` expect a configuration object.
+
+All of these configuration objects follow the exact same schema as defined in the [`@aagam/tailor`](https://github.com/Aagam-Jodhpur/tailor) library.
+
+For convenience, here is a list of all the different types you may have to use while creating any configuration objects.
+
+```ts
+interface TOutfitConfig {
+  base: TOutfitBaseConfig
+  groupWiseLayers: Record<string, TOutfitLayerConfig[]>
+}
+
+interface TOutfitBaseConfig {
+  width: number
+  height: number
+  imgSrc: string
+  enhancedImgSrc: string
+}
+
+interface TOutfitLayerConfig {
+  maskImgSrc: string
+  textureTilingOptions?: TTextureTilingOptions
+}
+
+interface TTextureTilingOptions {
+  scale?: number
+  angle?: number
+}
+
+interface TTextureConfig {
+  imgSrc: string
+  scale?: number
+}
+
+interface TPreviewOptions {
+  transitionOptions?: TTransitionOptions
+}
+
+interface TTransitionOptions {
+  entry?: TTransitionName
+  exit?: TTransitionName
+  timingFn?: TTimingFnName
+  speed?: number
+}
+
+enum TTransitionName {
+  FADE_IN = 'FadeIn',
+  FADE_OUT = 'FadeOut',
+  WIPE_IN = 'WipeIn',
+  WIPE_OUT = 'WipeOut',
+}
+
+enum TTimingFnName {
+  LINEAR = 'Linear',
+  EASE_IN_QUAD = 'EaseInQuad',
+  EASE_OUT_QUAD = 'EaseOutQuad',
+  EASE_IN_CUBIC = 'EaseInCubic',
+  EASE_OUT_CUBIC = 'EaseOutCubic',
+}
+```

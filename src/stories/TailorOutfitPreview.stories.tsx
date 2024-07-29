@@ -124,7 +124,7 @@ const meta = {
         },
       },
     },
-    error: {
+    errorDisplay: {
       control: {
         disable: true,
       },

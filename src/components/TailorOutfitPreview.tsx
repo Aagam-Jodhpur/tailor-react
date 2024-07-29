@@ -80,7 +80,7 @@ export interface TailorOutfitPreviewProps {
    * This component will, by default, be centered on the overlay.
    * Can be positioned relative to the overlay as well.
    */
-  error?: FC<TailorErrorProps>
+  errorDisplay?: FC<TailorErrorDisplayProps>
 
   /**
    * Called when initialization starts.
@@ -164,7 +164,7 @@ export const TailorOutfitPreview: FC<TailorOutfitPreviewProps> = ({
   loader,
 
   noErrorDisplay = false,
-  error,
+  errorDisplay,
 
   onInitStart,
   onInitEnd,
@@ -293,7 +293,7 @@ export const TailorOutfitPreview: FC<TailorOutfitPreviewProps> = ({
   //===============================<  Render method  >============================
 
   const Loader = loader ?? TailorLoader
-  const Error = error ?? TailorError
+  const ErrorDisplay = errorDisplay ?? TailorErrorDisplay
 
   return (
     <div
@@ -306,17 +306,17 @@ export const TailorOutfitPreview: FC<TailorOutfitPreviewProps> = ({
     >
       {!noErrorDisplay && (
         <div
-          className="tailor-error-container tailor-overlay"
+          className="tailor-overlay"
           style={{
             opacity: errs.length > 0 ? 1 : 0,
           }}
         >
-          {errs.length > 0 && <Error msgs={errs} />}
+          {errs.length > 0 && <ErrorDisplay msgs={errs} />}
         </div>
       )}
       {!noLoader && (
         <div
-          className="tailor-loader-container tailor-overlay"
+          className="tailor-overlay"
           style={{
             opacity: loading ? 1 : 0,
           }}
@@ -336,15 +336,15 @@ const TailorLoader: FC = _ => {
 
 //==============================<  Error component  >===========================
 
-interface TailorErrorProps {
+interface TailorErrorDisplayProps {
   msgs: string[]
 }
 
-const TailorError: FC<TailorErrorProps> = props => {
+const TailorErrorDisplay: FC<TailorErrorDisplayProps> = props => {
   return (
-    <div className="tailor-error">
+    <div className="tailor-error-display">
       {props.msgs.map((msg, i) => (
-        <p key={i} className="tailor-error-item">
+        <p key={i} className="tailor-error-display-item">
           {msg}
         </p>
       ))}

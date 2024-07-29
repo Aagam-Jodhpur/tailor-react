@@ -27,6 +27,32 @@ export interface TailorOutfitPreviewProps {
   loader?: FC
   noErrorDisplay?: boolean
   error?: FC<TailorErrorProps>
+
+  /**
+   * Called when initialization starts.
+   * Initialization is needed during first mount and every time after the outfit config changes.
+   */
+  onInitStart?: () => void
+
+  /**
+   * Called when initialization ends
+   */
+  onInitEnd?: () => void
+
+  /**
+   * Called when rendering starts
+   */
+  onRenderStart?: () => void
+
+  /**
+   * Called when rendering ends
+   */
+  onRenderEnd?: () => void
+
+  /**
+   * Called every time there is an error
+   */
+  onError?: (err: TError) => void
 }
 
 type TArchivedTextureMap = Record<string, number>
@@ -70,6 +96,11 @@ export const TailorOutfitPreview: FC<TailorOutfitPreviewProps> = ({
   height = '100%',
   noLoader = false,
   noErrorDisplay = false,
+  onInitStart,
+  onInitEnd,
+  onRenderStart,
+  onRenderEnd,
+  onError,
   ...props
 }) => {
   const containerRef = useRef() as MutableRefObject<HTMLDivElement>
@@ -87,6 +118,7 @@ export const TailorOutfitPreview: FC<TailorOutfitPreviewProps> = ({
   useEffect(() => {
     async function init() {
       setLoading(true)
+      if (onInitStart) onInitStart()
       try {
         // If tailor instance already exists, destroy it
         if (tailor) {
@@ -102,9 +134,11 @@ export const TailorOutfitPreview: FC<TailorOutfitPreviewProps> = ({
         if (err instanceof TError) {
           const errMsg = err.print()
           setErrs(errs => [...errs, errMsg])
+          if (onError) onError(err)
         } else throw err
       }
       setLoading(false)
+      if (onInitEnd) onInitEnd()
     }
 
     init()
@@ -159,6 +193,7 @@ export const TailorOutfitPreview: FC<TailorOutfitPreviewProps> = ({
       if (jobQueue.length > 0 && !loading) {
         setLoading(true)
         setJobQueue(jobQueue.slice(1))
+        if (onRenderStart) onRenderStart()
 
         const job = jobQueue[0]
         const results = await Promise.allSettled(
@@ -170,10 +205,14 @@ export const TailorOutfitPreview: FC<TailorOutfitPreviewProps> = ({
         )
         const errs: string[] = []
         for (let result of results) {
-          if (result.status === 'rejected') errs.push(result.reason)
+          if (result.status === 'rejected') {
+            errs.push(result.reason)
+            if (onError) onError(result.reason)
+          }
         }
-        setErrs(_errs => [..._errs, ...errs])
+        if (errs.length > 0) setErrs(_errs => [..._errs, ...errs])
         setLoading(false)
+        if (onRenderEnd) onRenderEnd()
       }
     }
 

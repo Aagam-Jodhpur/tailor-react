@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
+import { fn } from '@storybook/test'
 import { Controls, Description, Subtitle, Title } from '@storybook/blocks'
 
 import type { TOutfitConfig, TTextureConfig } from '@aagam/tailor'
@@ -58,20 +59,50 @@ const meta = {
         },
       },
     },
+    onInitStart: {
+      table: {
+        category: 'Event handlers',
+      },
+    },
+    onInitEnd: {
+      table: {
+        category: 'Event handlers',
+      },
+    },
+    onRenderStart: {
+      table: {
+        category: 'Event handlers',
+      },
+    },
+    onRenderEnd: {
+      table: {
+        category: 'Event handlers',
+      },
+    },
+    onError: {
+      table: {
+        category: 'Event handlers',
+      },
+    },
     loader: {
       table: {
-        subcategory: 'Render props',
+        category: 'Render props',
       },
     },
     error: {
       table: {
-        subcategory: 'Render props',
+        category: 'Render props',
       },
     },
   },
   args: {
     width: '400px',
     height: '600px',
+    onInitStart: fn(),
+    onInitEnd: fn(),
+    onRenderStart: fn(),
+    onRenderEnd: fn(),
+    onError: fn(),
   },
 } satisfies Meta<typeof TailorOutfitPreview>
 

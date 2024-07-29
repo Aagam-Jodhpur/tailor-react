@@ -3,6 +3,10 @@
   "private": true,
   "version": "0.1.0",
   "type": "module",
+  "main": "dist/tailor-react.js",
+  "sideEffects": [
+    "**/*.css"
+  ],
   "scripts": {
     "clean": "rimraf dist",
     "prepare": "husky",
@@ -43,7 +47,8 @@
     "rimraf": "^6.0.1",
     "storybook": "^8.1.11",
     "typescript": "^5.2.2",
-    "vite": "^5.3.1"
+    "vite": "^5.3.1",
+    "vite-plugin-lib-inject-css": "^2.1.1"
   },
   "dependencies": {
     "@aagam/tailor": "github:Aagam-Jodhpur/tailor"

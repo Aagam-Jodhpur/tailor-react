@@ -172,13 +172,15 @@ export const TailorOutfitPreview: FC<TailorOutfitPreviewProps> = ({
       }
     }
 
-    setJobQueue(q => {
-      const nq = [...q]
-      if (nq.length === JOB_QUEUE_LENGTH) nq[length - 1] = job
-      else nq.push(job)
-      return nq
-    })
-  }, [tailor, props.textures])
+    if (Object.keys(job).length > 0) {
+      setJobQueue(q => {
+        const nq = [...q]
+        if (nq.length === JOB_QUEUE_LENGTH) nq[length - 1] = job
+        else nq.push(job)
+        return nq
+      })
+    }
+  }, [tailor, textures])
 
   // When job queue changes
   useEffect(() => {

@@ -7,6 +7,9 @@
   "sideEffects": [
     "**/*.css"
   ],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "clean": "rimraf dist",
     "prepare": "husky",
@@ -23,6 +26,7 @@
     "react-dom": "^18"
   },
   "devDependencies": {
+    "@aagam/tailor": "github:Aagam-Jodhpur/tailor",
     "@chromatic-com/storybook": "^1.6.1",
     "@storybook/addon-essentials": "^8.1.11",
     "@storybook/addon-interactions": "^8.1.11",
@@ -49,9 +53,6 @@
     "typescript": "^5.2.2",
     "vite": "^5.3.1",
     "vite-plugin-lib-inject-css": "^2.1.1"
-  },
-  "dependencies": {
-    "@aagam/tailor": "github:Aagam-Jodhpur/tailor"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"

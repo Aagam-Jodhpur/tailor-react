@@ -12,10 +12,7 @@ Check the source code for [Outfit Customization Demo]()
 
 ## Documentation
 
-For details about the schema of different config objects,
-refer the documentation of [`@aagam/tailor`](https://github.com/Aagam-Jodhpur/tailor).
-
-For details about the components in this library, visit the [Storybook](https://Aagam-Jodhpur.github.io/tailor-react)
+Visit the [Storybook](https://aagam-jodhpur.github.io/tailor-react/)
 
 ## Known issues
 
@@ -28,3 +25,12 @@ Disable react strict mode until this is fixed.
 Due to issues in the build pipeline, type declarations can not be generated.
 
 This will be fixed soon.
+
+### Storybook is laggy
+
+After visiting the example of the component with textures applied, the storybook will begin to lag and slow down.
+
+This is not a problem with the component library.
+This is a problem with the Storybook framework.
+
+A fix has neither been determined nor planned.

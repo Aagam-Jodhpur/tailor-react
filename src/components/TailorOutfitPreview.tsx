@@ -23,7 +23,9 @@ export interface TailorOutfitPreviewProps {
   height: string
   options?: TPreviewOptions
   textures?: TTextureMap
+  noLoader?: boolean
   loader?: FC
+  noErrorDisplay?: boolean
   error?: FC<TailorErrorProps>
 }
 
@@ -66,6 +68,8 @@ enum TJobType {
 export const TailorOutfitPreview: FC<TailorOutfitPreviewProps> = ({
   width = '100%',
   height = '100%',
+  noLoader = false,
+  noErrorDisplay = false,
   ...props
 }) => {
   const containerRef = useRef() as MutableRefObject<HTMLDivElement>
@@ -190,22 +194,26 @@ export const TailorOutfitPreview: FC<TailorOutfitPreviewProps> = ({
       }}
       ref={containerRef}
     >
-      <div
-        className="tailor-error-container tailor-overlay"
-        style={{
-          opacity: errs.length > 0 ? 1 : 0,
-        }}
-      >
-        {errs.length > 0 && <Error msgs={errs} />}
-      </div>
-      <div
-        className="tailor-loader-container tailor-overlay"
-        style={{
-          opacity: loading ? 1 : 0,
-        }}
-      >
-        {loading && <Loader />}
-      </div>
+      {!noErrorDisplay && (
+        <div
+          className="tailor-error-container tailor-overlay"
+          style={{
+            opacity: errs.length > 0 ? 1 : 0,
+          }}
+        >
+          {errs.length > 0 && <Error msgs={errs} />}
+        </div>
+      )}
+      {!noLoader && (
+        <div
+          className="tailor-loader-container tailor-overlay"
+          style={{
+            opacity: loading ? 1 : 0,
+          }}
+        >
+          {loading && <Loader />}
+        </div>
+      )}
     </div>
   )
 }
